@@ -5,6 +5,8 @@
 
 package Fangore.Engine.Resources.Map;
 
+import java.awt.Rectangle;
+
 /**
  *
  * @author justin.chrysler
@@ -49,5 +51,28 @@ public class Map {
     public Tile getTile(int col, int row)
     {
         return tiles[col][row];
+    }
+
+    public boolean isInvalidMovement(Rectangle playerRect) {
+        boolean invalidMove = false;
+
+        System.out.println("Now looking.");
+        for (int y = 0; y < tiles.length; y++)
+        {
+            for (int x = 0; x < tiles[y].length; x++)
+            {
+                if (tiles[y][x].getLocation().intersects(playerRect)
+                    && !tiles[y][x].canTravel())
+                {
+                    System.out.println("Found an intersection. ");
+                    System.out.println(tiles[y][x].getLocation());
+                    System.out.println(playerRect);
+                    invalidMove = true;
+                    break;
+                }
+            }
+        }
+
+        return invalidMove;
     }
 }

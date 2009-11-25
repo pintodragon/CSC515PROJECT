@@ -35,7 +35,7 @@ public class MapResourceLoader implements ResourceLoader<Map> {
         }
         catch (Exception exp)
         {
-            System.out.println(exp.getMessage());
+            exp.printStackTrace();
         }
 
         return generateMapHashMap(mlt.getValue());

@@ -7,6 +7,8 @@ package Fangore;
 
 import Fangore.Engine.GameState;
 import Fangore.Engine.GameManager;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.BoxLayout;
 import javax.swing.JApplet;
 
@@ -30,11 +32,11 @@ public class FangoreMain extends JApplet{
         setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
         add(GameManager.getGameManager().getCardPanel());
 
-        this.addKeyListener(GameManager.getGameManager().getKeyInputHandler());
-        this.addMouseListener(GameManager.getGameManager().getMouseInputHandler());
-
         // Make sure the applet can get focus.  Needed to catch key strokes.
         setFocusable(true);
+
+        this.addKeyListener(GameManager.getGameManager().getKeyInputHandler());
+        this.addMouseListener(GameManager.getGameManager().getMouseInputHandler());
         
         GameManager.getGameManager().setGameState(GameState.MENU);
     }

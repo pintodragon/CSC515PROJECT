@@ -2,6 +2,8 @@ package Fangore.Engine;
 
 
 import Fangore.Engine.Resources.Map.Map;
+import Fangore.Input.KeyInput;
+import Fangore.Input.MouseInput;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -18,13 +20,9 @@ import javax.swing.JPanel;
  */
 public class GameCanvas extends JPanel {
 
-    GameCanvas()
+    GameCanvas(Dimension appSize)
     {
         super(true);
-    }
-
-    GameCanvas(Dimension appSize) {
-        this();
         this.setSize(appSize);
     }
 
@@ -57,7 +55,7 @@ public class GameCanvas extends JPanel {
 
     private void paintsomething(Graphics g)
     {
-        Map currentMap = GameManager.getGameManager().getMap("OnlyMap");
+        Map currentMap = GameManager.getGameManager().getCurrentMap();
         int tileSize = currentMap.getTileSize();
 
         for (int x = 0; x < getSize().width / tileSize; x++)

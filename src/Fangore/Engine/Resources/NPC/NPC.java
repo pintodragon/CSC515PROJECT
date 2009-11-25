@@ -5,6 +5,7 @@
 
 package Fangore.Engine.Resources.NPC;
 
+import Fangore.Engine.GameManager;
 import Fangore.Engine.Characters.Characters;
 import java.awt.Rectangle;
 
@@ -15,9 +16,11 @@ import java.awt.Rectangle;
 public abstract class NPC extends Characters {
     protected NPCType npcType;
 
-    public NPC(String newName, Rectangle startingLocation)
+    public NPC(String newName, Rectangle startingLocation, boolean moves)
     {
-        super(newName, startingLocation);
+        super(newName,
+              startingLocation,
+              moves);
     }
 
     public abstract NPCType getNPCType();

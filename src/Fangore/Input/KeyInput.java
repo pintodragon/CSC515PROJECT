@@ -6,6 +6,7 @@
 package Fangore.Input;
 
 import Fangore.Engine.GameManager;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
 
@@ -28,27 +29,41 @@ public class KeyInput extends KeyAdapter {
         }
     }
 
-    @Override
-    public void keyReleased(KeyEvent keyEvent)
+    private void processInGameEvent(KeyEvent keyEvent)
     {
-        switch(GameManager.getGameManager().getGameState())
+        int dx = 0, dy = 0;
+
+        switch(keyEvent.getKeyCode())
         {
-            case PLAYING:
-                processInGameEvent(keyEvent);
+            case (KeyEvent.VK_DOWN):
+                dy = 1;
+                break;
+            case (KeyEvent.VK_UP):
+                dy = -1;
+                break;
+            case (KeyEvent.VK_LEFT):
+                dx = -1;
+                break;
+            case (KeyEvent.VK_RIGHT):
+                dx = 1;
                 break;
             default:
                 break;
         }
+
+        movePlayer(dx, dy);
     }
 
-    private void processInGameEvent(KeyEvent keyEvent)
+    private void movePlayer(int dx, int dy)
     {
-        switch(keyEvent.getKeyCode())
+        Rectangle playerRect =
+                GameManager.getGameManager().getPlayer().getLocation();
+
+        playerRect.translate(dx, dy);
+
+        if (!GameManager.getGameManager().getCurrentMap().isInvalidMovement(playerRect))
         {
-            case (KeyEvent.VK_DOWN):
-                break;
-            default:
-                break;
+            GameManager.getGameManager().getPlayer().updateLocation(dx, dy);
         }
     }
 }

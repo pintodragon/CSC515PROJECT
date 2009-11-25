@@ -33,12 +33,11 @@ public class GameManager {
     protected GameCanvas gameCanvas = null;
     protected MenuCanvas menuCanvas = null;
     protected GameState currentState = GameState.INIT;
-    protected KeyInput keyInputHandler;
-    protected MouseInput mouseInputHandler;
 
     protected LinkedHashMap<String, Map> mapList;
     protected LinkedHashMap<String, NPC> npcList;
     protected Player player = null;
+    protected String currentMapName = "";
 
     protected static GameManager gameManager = null;
 
@@ -51,6 +50,8 @@ public class GameManager {
     {
         ResourceLoader mapResourceLoader = new MapResourceLoader();
         mapList = mapResourceLoader.loadResource(parent);
+        currentMapName = "OnlyMap";
+        
         gameCanvas = new GameCanvas(appSize);
         menuCanvas = new MenuCanvas(appSize);
 
@@ -86,12 +87,18 @@ public class GameManager {
     {
         gameManager.cardLayout.show(cardPanel, GAME_CARD);
         gameManager.setGameState(GameState.PLAYING);
-        gameManager.player = new Player(gameManager.getMap("OnlyMap").getTileSize());
+        gameManager.player = new Player();
     }
 
-    public Map getMap(String name)
+    public Map selectMap(String name)
     {
-        return mapList.get(name);
+        currentMapName = name;
+        return mapList.get(currentMapName);
+    }
+
+    public Map getCurrentMap()
+    {
+        return mapList.get(currentMapName);
     }
 
     public JPanel getCardPanel()
@@ -121,12 +128,12 @@ public class GameManager {
 
     public KeyInput getKeyInputHandler()
     {
-        return getGameManager().keyInputHandler;
+        return new KeyInput();
     }
 
     public MouseInput getMouseInputHandler()
     {
-        return getGameManager().mouseInputHandler;
+        return new MouseInput();
     }
 
     public Player getPlayer()

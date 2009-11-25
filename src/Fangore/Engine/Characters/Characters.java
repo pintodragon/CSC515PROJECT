@@ -5,6 +5,7 @@
 
 package Fangore.Engine.Characters;
 
+import Fangore.Engine.GameManager;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
@@ -15,11 +16,16 @@ import java.awt.Rectangle;
 public abstract class Characters {
     protected String name;
     protected Rectangle location;
+    protected int speed = 0;
 
-    public Characters(String newName, Rectangle startingLocation)
+    public Characters(String newName, Rectangle startingLocation, boolean moves)
     {
         name = newName;
         location = startingLocation;
+        if (moves)
+        {
+            speed = GameManager.getGameManager().getCurrentMap().getTileSize() / 3;
+        }
     }
 
     public String getName()
@@ -30,6 +36,19 @@ public abstract class Characters {
     public Rectangle getLocation()
     {
         return location;
+    }
+
+    public int getSpeed()
+    {
+        return speed;
+    }
+
+    public void updateLocation(int dx, int dy)
+    {
+        System.out.println(location.x + " " + location.y);
+        location.translate(dx * speed, dy * speed);
+        System.out.println(dx + " " + dy);
+        System.out.println(location.x + " " + location.y);
     }
 
     public abstract void draw(Graphics g);
