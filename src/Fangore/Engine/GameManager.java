@@ -1,7 +1,9 @@
 package Fangore.Engine;
 
-import Fangore.Engine.Resources.NPC;
-import Fangore.Engine.Resources.Map;
+import Fangore.Engine.Characters.Player;
+import Fangore.Engine.Resources.NPC.NPC;
+import Fangore.Engine.Resources.Map.Map;
+import Fangore.Engine.Resources.Map.MapResourceLoader;
 import Fangore.Engine.Resources.ResourceLoader;
 import Fangore.Input.KeyInput;
 import Fangore.Input.MouseInput;
@@ -20,6 +22,7 @@ import javax.swing.JPanel;
  *
  * @author pinto
  */
+@SuppressWarnings("unchecked")
 public class GameManager {
 
     public static final String MENU_CARD = "Menu Card";
@@ -35,6 +38,7 @@ public class GameManager {
 
     protected LinkedHashMap<String, Map> mapList;
     protected LinkedHashMap<String, NPC> npcList;
+    protected Player player = null;
 
     protected static GameManager gameManager = null;
 
@@ -45,7 +49,8 @@ public class GameManager {
 
     private GameManager(JApplet parent, Dimension appSize)
     {
-        mapList = ResourceLoader.getMapList(parent);
+        ResourceLoader mapResourceLoader = new MapResourceLoader();
+        mapList = mapResourceLoader.loadResource(parent);
         gameCanvas = new GameCanvas(appSize);
         menuCanvas = new MenuCanvas(appSize);
 
@@ -81,6 +86,7 @@ public class GameManager {
     {
         gameManager.cardLayout.show(cardPanel, GAME_CARD);
         gameManager.setGameState(GameState.PLAYING);
+        gameManager.player = new Player(gameManager.getMap("OnlyMap").getTileSize());
     }
 
     public Map getMap(String name)
@@ -121,5 +127,10 @@ public class GameManager {
     public MouseInput getMouseInputHandler()
     {
         return getGameManager().mouseInputHandler;
+    }
+
+    public Player getPlayer()
+    {
+        return getGameManager().player;
     }
 }

@@ -1,9 +1,7 @@
 package Fangore.Engine;
 
 
-import Fangore.Engine.Resources.Map;
-import Fangore.Engine.Resources.Tile;
-import Fangore.Engine.Resources.TileType;
+import Fangore.Engine.Resources.Map.Map;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -69,5 +67,7 @@ public class GameCanvas extends JPanel {
                 currentMap.getTile(y, x).draw(g);
             }
         }
+
+        GameManager.getGameManager().getPlayer().draw(g);
     }
 }
