@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package Fangore.Input;
+package Fangore.Engine.Input;
 
 import Fangore.Engine.GameManager;
 import java.awt.Rectangle;
@@ -52,14 +52,16 @@ public class KeyInput extends KeyAdapter {
         }
 
         movePlayer(dx, dy);
+        //GameManager.getGameManager().getGameCanvas().repaint();
     }
 
     private void movePlayer(int dx, int dy)
     {
-        Rectangle playerRect =
-                GameManager.getGameManager().getPlayer().getLocation();
+        Rectangle playerRect = new Rectangle(
+            GameManager.getGameManager().getPlayer().getLocation());
+        int speed = GameManager.getGameManager().getPlayer().getSpeed();
 
-        playerRect.translate(dx, dy);
+        playerRect.translate(dx * speed, dy * speed);
 
         if (!GameManager.getGameManager().getCurrentMap().isInvalidMovement(playerRect))
         {

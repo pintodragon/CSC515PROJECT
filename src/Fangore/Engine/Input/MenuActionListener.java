@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package Fangore.Input;
+package Fangore.Engine.Input;
 
 import Fangore.Engine.GameManager;
 

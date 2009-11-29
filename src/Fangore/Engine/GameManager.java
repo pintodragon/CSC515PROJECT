@@ -4,12 +4,14 @@ import Fangore.Engine.Characters.Player;
 import Fangore.Engine.Resources.NPC.NPC;
 import Fangore.Engine.Resources.Map.Map;
 import Fangore.Engine.Resources.Map.MapResourceLoader;
+import Fangore.Engine.Resources.NPC.NPCResourceLoader;
 import Fangore.Engine.Resources.ResourceLoader;
-import Fangore.Input.KeyInput;
-import Fangore.Input.MouseInput;
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JApplet;
 import javax.swing.JPanel;
 
@@ -33,6 +35,7 @@ public class GameManager {
     protected GameCanvas gameCanvas = null;
     protected MenuCanvas menuCanvas = null;
     protected GameState currentState = GameState.INIT;
+    protected JApplet parent = null;
 
     protected LinkedHashMap<String, Map> mapList;
     protected LinkedHashMap<String, NPC> npcList;
@@ -41,16 +44,11 @@ public class GameManager {
 
     protected static GameManager gameManager = null;
 
-    private GameManager()
+    private GameManager(JApplet parentApplet, Dimension appSize)
     {
-        this(null, new Dimension(100, 100));
-    }
-
-    private GameManager(JApplet parent, Dimension appSize)
-    {
-        ResourceLoader mapResourceLoader = new MapResourceLoader();
-        mapList = mapResourceLoader.loadResource(parent);
+        parent = parentApplet;
         currentMapName = "OnlyMap";
+        mapList = new MapResourceLoader().loadResource(parent);
         
         gameCanvas = new GameCanvas(appSize);
         menuCanvas = new MenuCanvas(appSize);
@@ -67,7 +65,10 @@ public class GameManager {
     {
         if (gameManager == null)
         {
-            gameManager = new GameManager();
+            throw new UnsupportedOperationException(
+                    "GameManager must be initialized using\n getGameManager(" +
+                    "JApplet parent, Dimension appSize) prior\n to using " +
+                    "getGameManager() except when a refresh of the\n page occurs.");
         }
 
         return gameManager;
@@ -83,11 +84,23 @@ public class GameManager {
         return gameManager;
     }
 
+    public void destroySelf()
+    {
+        gameCanvas.stopTimer();
+        gameManager = null;
+    }
+
     public void gameInit()
     {
+        npcList = new NPCResourceLoader().loadResource(parent);
         gameManager.cardLayout.show(cardPanel, GAME_CARD);
         gameManager.setGameState(GameState.PLAYING);
         gameManager.player = new Player();
+    }
+
+    public void updateLocations()
+    {
+        
     }
 
     public Map selectMap(String name)
@@ -126,18 +139,26 @@ public class GameManager {
         return getGameManager().currentState;
     }
 
-    public KeyInput getKeyInputHandler()
-    {
-        return new KeyInput();
-    }
-
-    public MouseInput getMouseInputHandler()
-    {
-        return new MouseInput();
-    }
-
     public Player getPlayer()
     {
         return getGameManager().player;
+    }
+
+    public ArrayList<NPC> getCurrentMapNPCs()
+    {
+        ArrayList<NPC> returnNPCList = new ArrayList<NPC>();
+
+        if (npcList != null)
+        {
+            for (NPC currentNPC : npcList.values())
+            {
+                if (currentNPC.onMap(currentMapName))
+                {
+                    returnNPCList.add(currentNPC);
+                }
+            }
+        }
+
+        return returnNPCList;
     }
 }

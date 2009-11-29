@@ -5,6 +5,7 @@
 
 package Fangore.Engine.Resources.Map;
 
+import Fangore.Engine.GameManager;
 import java.awt.Rectangle;
 
 /**
@@ -56,7 +57,6 @@ public class Map {
     public boolean isInvalidMovement(Rectangle playerRect) {
         boolean invalidMove = false;
 
-        System.out.println("Now looking.");
         for (int y = 0; y < tiles.length; y++)
         {
             for (int x = 0; x < tiles[y].length; x++)
@@ -64,13 +64,16 @@ public class Map {
                 if (tiles[y][x].getLocation().intersects(playerRect)
                     && !tiles[y][x].canTravel())
                 {
-                    System.out.println("Found an intersection. ");
-                    System.out.println(tiles[y][x].getLocation());
-                    System.out.println(playerRect);
                     invalidMove = true;
                     break;
                 }
             }
+        }
+
+        if (playerRect.x < 0 || playerRect.x + playerRect.width > GameManager.getGameManager().getGameCanvas().getWidth()
+            || playerRect.y < 0 || playerRect.y + playerRect.height  > GameManager.getGameManager().getGameCanvas().getHeight())
+        {
+            invalidMove = true;
         }
 
         return invalidMove;

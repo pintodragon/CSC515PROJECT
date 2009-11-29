@@ -15,14 +15,26 @@ import java.awt.Rectangle;
  * @author justin.chrysler
  */
 public class Player extends Characters {
+
+    protected Rectangle location;
     
     public Player()
     {
-        super("Fangore", new Rectangle(5, 
-             2 * GameManager.getGameManager().getCurrentMap().getTileSize() + 5,
-             GameManager.getGameManager().getCurrentMap().getTileSize() - 10,
-             GameManager.getGameManager().getCurrentMap().getTileSize() - 10),
-             true);
+        super("Fangore", null, true);
+        int tileSize = GameManager.getGameManager().getCurrentMap().getTileSize();
+        location = new Rectangle(5, 2 * tileSize + 5, tileSize - 10, tileSize - 10);
+    }
+
+    @Override
+    public Rectangle getLocation()
+    {
+        return location;
+    }
+
+    @Override
+    public void updateLocation(int dx, int dy)
+    {
+        location.translate(dx * speed, dy * speed);
     }
 
     @Override

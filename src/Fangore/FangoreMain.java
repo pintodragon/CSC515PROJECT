@@ -7,8 +7,8 @@ package Fangore;
 
 import Fangore.Engine.GameState;
 import Fangore.Engine.GameManager;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import Fangore.Engine.Input.KeyInput;
+import Fangore.Engine.Input.MouseInput;
 import javax.swing.BoxLayout;
 import javax.swing.JApplet;
 
@@ -17,9 +17,6 @@ import javax.swing.JApplet;
  * @author pinto
  */
 public class FangoreMain extends JApplet{
-
-    protected GameManager gameManager;
-    protected boolean menuPanelDisplayed = false;
     
     /**
      * Initialization method that will be called after the applet is loaded
@@ -27,7 +24,6 @@ public class FangoreMain extends JApplet{
      */
     @Override
     public void init() {
-        // TODO start asynchronous download of heavy resources
         GameManager.getGameManager(this, this.getSize());
         setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
         add(GameManager.getGameManager().getCardPanel());
@@ -35,11 +31,13 @@ public class FangoreMain extends JApplet{
         // Make sure the applet can get focus.  Needed to catch key strokes.
         setFocusable(true);
 
-        this.addKeyListener(GameManager.getGameManager().getKeyInputHandler());
-        this.addMouseListener(GameManager.getGameManager().getMouseInputHandler());
-        
-        GameManager.getGameManager().setGameState(GameState.MENU);
+        this.addKeyListener(new KeyInput());
+        this.addMouseListener(new MouseInput());
     }
 
-    // TODO overwrite start(), stop() and destroy() methods
+    @Override
+    public void destroy()
+    {
+        GameManager.getGameManager().destroySelf();
+    }
 }

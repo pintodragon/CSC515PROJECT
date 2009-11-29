@@ -12,10 +12,9 @@ package Fangore.Engine;
 public enum GameState {
     INIT (0),
     MENU (1),
-    START (2),
-    PLAYING (3),
-    GAME_OVER (4),
-    EXIT (5);
+    PLAYING (2),
+    GAME_OVER_BAD (3),
+    GAME_OVER_GOOD (4);
     
     private int currentState;
 

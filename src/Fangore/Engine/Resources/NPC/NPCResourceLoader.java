@@ -24,6 +24,37 @@ public class NPCResourceLoader implements ResourceLoader<NPC> {
     
     public LinkedHashMap<String, NPC> loadResource(JApplet parent)
     {
-        return null;
+        JAXBElement<NPCListType> nlt = null;
+
+        try
+        {
+            URL url = new URL(parent.getDocumentBase(), "NPCs.xml");
+            JAXBContext jc = JAXBContext.newInstance("Fangore.Engine.Resources.NPC");
+            Unmarshaller u = jc.createUnmarshaller();
+            nlt = (JAXBElement<NPCListType>) u.unmarshal(url);
+        }
+        catch (Exception exp)
+        {
+            exp.printStackTrace();
+        }
+
+        return generateNPCHashMap(nlt.getValue());
+    }
+
+    protected static LinkedHashMap<String, NPC> generateNPCHashMap(NPCListType nlt)
+    {
+        LinkedHashMap<String, NPC> mapHash = new LinkedHashMap<String, NPC>();
+
+        for (NPCType currentNPC : nlt.getNPC())
+        {
+            NPC newMap = new NPC(
+                currentNPC.getName(),
+                currentNPC.getMapInfo(),
+                NPCTypeEnum.getIntType(currentNPC.getType()),
+                currentNPC.isCanTravel());
+            mapHash.put(newMap.getName(), newMap);
+        }
+
+        return mapHash;
     }
 }

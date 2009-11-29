@@ -6,8 +6,11 @@
 package Fangore.Engine.Characters;
 
 import Fangore.Engine.GameManager;
+import Fangore.Engine.Resources.NPC.NPCMapInfo;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  *
@@ -15,16 +18,30 @@ import java.awt.Rectangle;
  */
 public abstract class Characters {
     protected String name;
-    protected Rectangle location;
+    protected LinkedHashMap<String, Rectangle> locationHashMap;
     protected int speed = 0;
 
-    public Characters(String newName, Rectangle startingLocation, boolean moves)
+    public Characters(String newName, List<NPCMapInfo> mapList, boolean moves)
     {
+        locationHashMap = new LinkedHashMap<String, Rectangle>();
         name = newName;
-        location = startingLocation;
         if (moves)
         {
-            speed = GameManager.getGameManager().getCurrentMap().getTileSize() / 3;
+            speed = 3;
+        }
+
+        if (mapList != null)
+        {
+            int tileSize = GameManager.getGameManager().getCurrentMap().getTileSize();
+            for (NPCMapInfo mapInfo : mapList)
+            {
+                Rectangle currentRect = new Rectangle(
+                    mapInfo.getInitialTileX() * tileSize + 5,
+                    mapInfo.getInitialTileY() * tileSize + 5,
+                    tileSize - 10,
+                    tileSize - 10);
+                locationHashMap.put(mapInfo.getMapName(), currentRect);
+            }
         }
     }
 
@@ -35,7 +52,7 @@ public abstract class Characters {
 
     public Rectangle getLocation()
     {
-        return location;
+        return locationHashMap.get(GameManager.getGameManager().getCurrentMap().getName());
     }
 
     public int getSpeed()
@@ -45,10 +62,12 @@ public abstract class Characters {
 
     public void updateLocation(int dx, int dy)
     {
-        System.out.println(location.x + " " + location.y);
-        location.translate(dx * speed, dy * speed);
-        System.out.println(dx + " " + dy);
-        System.out.println(location.x + " " + location.y);
+        locationHashMap.get(GameManager.getGameManager().getCurrentMap().getName()).translate(dx * speed, dy * speed);
+    }
+
+    public boolean onMap(String mapName)
+    {
+        return locationHashMap.keySet().contains(mapName);
     }
 
     public abstract void draw(Graphics g);
