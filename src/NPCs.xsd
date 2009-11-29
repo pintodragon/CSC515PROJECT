@@ -13,10 +13,17 @@
 
 <xsd:complexType name="NPCType">
   <xsd:sequence>
-    <xsd:element name="TileRow" type="xsd:string" maxOccurs="unbounded"/>
+    <xsd:element name="MapInfo" type="NPCMapInfo" maxOccurs="unbounded"/>
   </xsd:sequence>
   <xsd:attribute name="Name" type="xsd:string"/>
   <xsd:attribute name="Type" type="xsd:int"/>
+  <xsd:attribute name="CanTravel" type="xsd:boolean"/>
+</xsd:complexType>
+
+<xsd:complexType name="NPCMapInfo">
+  <xsd:attribute name="MapName" type="xsd:string"/>
+  <xsd:attribute name="InitialTileX" type="xsd:int"/>
+  <xsd:attribute name="InitialTileY" type="xsd:int"/>
 </xsd:complexType>
 
 </xsd:schema>

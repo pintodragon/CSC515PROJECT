@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : Maps.xml
+    Created on : November 20, 2009, 3:25 PM
+    Author     : justin.chrysler
+    Description:
+        Stores the maps for use in the Fangore engine/game.
+-->
+
+<NPCs>
+    <NPC Name="Farie" Type="1" CanTravel="false">
+        <MapInfo MapName="OnlyMap" InitialTileX="22" InitialTileY="15" />
+    </NPC>
+    <NPC Name="Goblin" Type="2" CanTravel="true">
+        <MapInfo MapName="OnlyMap" InitialTileX="3" InitialTileY="6" />
+    </NPC>
+    <NPC Name="Dragon" Type="2" CanTravel="true">
+        <MapInfo MapName="OnlyMap" InitialTileX="15" InitialTileY="7" />
+    </NPC>
+</NPCs>
